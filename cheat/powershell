@@ -1,0 +1,15 @@
+# powershell
+
+## Scripts ##
+
+# MD5
+function md5hash($path)
+{
+    $fullPath = Resolve-Path $path
+    $md5 = new-object -TypeName System.Security.Cryptography.MD5CryptoServiceProvider
+    $file = [System.IO.File]::Open($fullPath,[System.IO.Filemode]::Open, [System.IO.FileAccess]::Read)
+    $result = [System.BitConverter]::ToString($md5.ComputeHash($file))
+    $result.replace('-','')
+    $file.Dispose()
+}
+

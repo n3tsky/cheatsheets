@@ -1,0 +1,5 @@
+# smb
+
+# Mount SMB
+smbclient \\\\ip or hostname\\foldername -U [username] [password]
+mount -t cifs //servername/foldername /localmountpoint -o username=myusername,password=mypassword 

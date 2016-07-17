@@ -1,0 +1,12 @@
+# qemu
+
+# Create hard disk image
+qemu-img create -f raw image_file 4G
+
+# Resize image
+qemu-img resize disk_image +10G
+
+# Install image
+qemu-system-x86_64 -cdrom system.iso -boot order=d -drive file=<hard disk>,format=raw -m 2G
+
+

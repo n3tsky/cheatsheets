@@ -1,0 +1,4 @@
+# forensic
+
+# Log2Timeline
+log2timeline -r -z Europe/Paris -o mactime folder/ > output

