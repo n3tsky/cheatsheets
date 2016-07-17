@@ -7,10 +7,8 @@ sudo pip install cheat
 
 echo "[!] Set parameters"
 echo -e "\nEDITOR=vim" >> ~/.bashrc
-echo -e "\nCHEATCOLORS=true" >> ~/.bashrc
-if [ ! -d "~/.cheat" ]; then
-  mkdir ~/.cheat
-fi
+echo "CHEATCOLORS=true" >> ~/.bashrc
+[ ! -d ~/.cheat  ] && mkdir ~/.cheat
 
 echo "[!] Copy cheatsheets"
 cp cheat/* ~/.cheat/
