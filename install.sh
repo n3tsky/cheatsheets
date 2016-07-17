@@ -9,7 +9,7 @@ echo "[!] Set parameters"
 echo -e "\nEDITOR=vim" >> ~/.bashrc
 echo -e "\nCHEATCOLORS=true" >> ~/.bashrc
 if [ ! -d "~/.cheat" ]; then
-  mkdir "~/.cheat"
+  mkdir ~/.cheat
 fi
 
 echo "[!] Copy cheatsheets"
