@@ -13,3 +13,4 @@ if [ ! -d "~/.cheat" ]; then
 fi
 
 echo "[!] Copy cheatsheets"
+cp cheat/* ~/.cheat/
